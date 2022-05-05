@@ -44,28 +44,17 @@ const updateSettings = document.querySelector(".updateSettings")
  var callCost = 0;
  var smsCost = 0;
 
+ var settingTotalCost = 0;
+
  function updateSetting(){
 
-    var settingBillItemCall = callCostSetting.value
-    var settingBillItemSms = smsCostSetting.value
-    var warningLevel = warningLevelSetting.value
-    var criticalLevel = criticalLevelSetting.value
+   callCost = callCostSetting.value
+   smsCost = smsCostSetting.value
+    warningLevel = warningLevelSetting.value
+    criticalLevel = criticalLevelSetting.value
 
-     if(settingBillItemCall !== null){
-        settingBillItemCall 
-     }
-     if(settingBillItemSms !== null){
-        settingBillItemCall
-     }
-     if(warningLevel !== null){
-        warningLevel
-     }
-     if(criticalLevel !== null){
-        criticalLevel
-     } 
-
+    addClassName()
  }
- updateSettings.addEventListener('click', updateSetting);
 
 
 function settingBillTotal(){
@@ -73,40 +62,48 @@ function settingBillTotal(){
     var checkedSettRadioBtn = document.querySelector("input[name='billItemTypeWithSettings']:checked");
     var settingBillItemType = checkedSettRadioBtn.value
 
-    var settingBillItemCall = callCostSetting.value
-    var settingBillItemSms = smsCostSetting.value
-    var warningLevel = warningLevelSetting.value
-    var criticalLevel = criticalLevelSetting.value
-
 
     //update the correct total
     if (settingBillItemType === "call"){
-        settingCallsTotal += Number(settingBillItemCall)
+        settingCallsTotal += Number(callCost)
     }
     else if (settingBillItemType === "sms"){
-        settingSmsTotal += Number(settingBillItemSms);
+        settingSmsTotal += Number(smsCost);
     }
     
     //update the totals that is displayed on the screen.
     callTotalSettings.innerHTML = Number(settingCallsTotal).toFixed(2);
     smsTotalSettings.innerHTML = Number(settingSmsTotal).toFixed(2);
-    var settingTotalCost = Number(settingCallsTotal) + Number(settingSmsTotal);
+    settingTotalCost = Number(settingCallsTotal) + Number(settingSmsTotal);
     totalSetting.innerHTML = Number(settingTotalCost).toFixed(2);
 
-    if (Number(settingTotalCost) >= criticalLevel){
-        //adding the danger class will make the text red
-        totalSetting.classList.add("danger");
-        
-    }
- 
-    else if (Number(settingTotalCost) >= warningLevel){
-        totalSetting.classList.add("warning");
-        
-    }
-    if(Number(settingTotalCost) >= criticalLevel){
-      settingBillAddBtn.disabled = true
-   }
+    addClassName()
     
 }
+
+function addClassName(){
+
+   if (Number(settingTotalCost) >= criticalLevel){
+      //adding the danger class will make the text red
+      totalSetting.classList.remove("warning");
+      totalSetting.classList.add("danger");
+      
+  }
+
+  else if (Number(settingTotalCost) >= warningLevel){
+      totalSetting.classList.remove("danger");
+      totalSetting.classList.add("warning");
+      
+  }
+  if(Number(settingTotalCost) >= criticalLevel){
+    settingBillAddBtn.disabled = true
+ }
+ else{
+   settingBillAddBtn.disabled = false
+ }
+}
+
+
 //An event listener for when the add button is pressed
 settingBillAddBtn.addEventListener('click', settingBillTotal);
+updateSettings.addEventListener('click', updateSetting);

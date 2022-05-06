@@ -83,8 +83,10 @@ function settingBillTotal(){
 
 function addClassName(){
 
+    totalSetting.classList.remove("danger");
+    totalSetting.classList.remove("warning");
+
    if (Number(settingTotalCost) >= criticalLevel){
-      //adding the danger class will make the text red
       totalSetting.classList.remove("warning");
       totalSetting.classList.add("danger");
       

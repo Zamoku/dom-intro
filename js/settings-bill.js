@@ -38,20 +38,14 @@ const settingBillAddBtn = document.querySelector('.settingBillAddBtn')
 //Reference to button
 const updateSettings = document.querySelector(".updateSettings")
 
-
- var settingCallsTotal = 0;
- var settingSmsTotal = 0;
- var callCost = 0;
- var smsCost = 0;
-
- var settingTotalCost = 0;
+const settingsBillInstance = BillWithSettings()
 
  function updateSetting(){
 
-   callCost = callCostSetting.value
-   smsCost = smsCostSetting.value
-    warningLevel = warningLevelSetting.value
-    criticalLevel = criticalLevelSetting.value
+    settingsBillInstance.setCallCost(Number(callCostSetting.value))
+    settingsBillInstance.setSmsCost(Number(smsCostSetting.value)) 
+    settingsBillInstance.setWarningLevel(warningLevelSetting.value)
+    settingsBillInstance.setCriticalLevel(criticalLevelSetting.value) 
 
     addClassName()
  }
@@ -65,17 +59,18 @@ function settingBillTotal(){
 
     //update the correct total
     if (settingBillItemType === "call"){
-        settingCallsTotal += Number(callCost)
+         settingsBillInstance.makeCall()
+        
     }
     else if (settingBillItemType === "sms"){
-        settingSmsTotal += Number(smsCost);
+        settingsBillInstance.sendSms()
+        
     }
     
     //update the totals that is displayed on the screen.
-    callTotalSettings.innerHTML = Number(settingCallsTotal).toFixed(2);
-    smsTotalSettings.innerHTML = Number(settingSmsTotal).toFixed(2);
-    settingTotalCost = Number(settingCallsTotal) + Number(settingSmsTotal);
-    totalSetting.innerHTML = Number(settingTotalCost).toFixed(2);
+    callTotalSettings.innerHTML = (settingsBillInstance.getTotalCallCost()).toFixed(2);
+    smsTotalSettings.innerHTML = (settingsBillInstance.getTotalSmsCost()).toFixed(2);
+    totalSetting.innerHTML = (settingsBillInstance.getTotalCost()).toFixed(2);
 
     addClassName()
     
@@ -85,24 +80,10 @@ function addClassName(){
 
     totalSetting.classList.remove("danger");
     totalSetting.classList.remove("warning");
+    
 
-   if (Number(settingTotalCost) >= criticalLevel){
-      totalSetting.classList.remove("warning");
-      totalSetting.classList.add("danger");
-      
-  }
-
-  else if (Number(settingTotalCost) >= warningLevel){
-      totalSetting.classList.remove("danger");
-      totalSetting.classList.add("warning");
-      
-  }
-  if(Number(settingTotalCost) >= criticalLevel){
-    settingBillAddBtn.disabled = true
- }
- else{
-   settingBillAddBtn.disabled = false
- }
+    totalSetting.classList.add(settingsBillInstance.totalClassName())
+   
 }
 
 

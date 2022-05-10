@@ -55,14 +55,14 @@ function BillWithSettings(){
         return theCriticalLevel
     }
     function hasReachedCriticalLevel(){
-        return getTotalCallCost() >= getCriticalLevel()
+        return getTotalCost() >= getCriticalLevel()
     }
     function totalClassName(){
         
         if(hasReachedCriticalLevel()){
             return "danger"
         }
-        if(getTotalCallCost() >= getWarningLevel()){
+        if(getTotalCost() >= getWarningLevel()){
             return "warning"
         }
     }

@@ -24,15 +24,15 @@ var smsTotal = 0;
 
 function textBillTotal(){
     // get the value entered in the billType textfield
-    var billTypeEntered = billTypeText.value.trim();
-    if(billTypeEntered.toLowerCase() === "call,sms" || billTypeEntered.toLowerCase() === "sms,call"){
+    var billTypeEntered = billTypeText.value.trim().toLowerCase();
+    if(billTypeEntered !== "call" && billTypeEntered !== "sms"){
         alert("PLEASE make sure you enter SMS or CALL")
     }
     // update the correct total
-    if (billTypeEntered.toLowerCase() === "call"){
+    if (billTypeEntered === "call"){
         callsTotal += 2.75
     }
-    else if (billTypeEntered.toLowerCase() === "sms"){
+    else if (billTypeEntered === "sms"){
         smsTotal += 0.75;
     }
     
